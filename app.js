@@ -28,9 +28,9 @@ console.log(banner);
  const viewOptions = [
     'View Dead End Departments',
     'View Bs, Made Up Roles',
-    'View Dead Inside Employees',
-    'Update Dead Inside Employee',
-    'Return To Your Real Crappy Life'
+    'View Shitty Employees',
+    'Update Shitty Employee',
+    'Rage Quit'
 ];
 
 const shittyemployeeOptions = [
@@ -47,7 +47,6 @@ const shittyemployeeOptions = [
 const updateOptions = [
     'First Name',
     'Last Name',
-    'Made-Up-Role',
     'exit'
 ];
 
@@ -73,13 +72,16 @@ function runSearch() {
 
                 case viewOptions[2]:
                     shitty_employeeView();
-                    break;
-
+                    break;  
                 case viewOptions[3]:
                     updateShittyEmployee();
                     break;
 
-                case updateOptions[4]:
+                case viewOptions[4]:
+                    updateOptions();
+                    break;
+
+                case updateOptions[5]:
                     connection.end();
                     break;
             }
@@ -100,7 +102,7 @@ function dead_end_departmentView() {
 function shitty_employeeView() {
     let sqlStr = 'SELECT first_name, last_name, title, salary FROM shitty_employee';
     sqlStr += 'LEFT JOIN role ';
-    sqlStr += 'ON shitty_employee.made_up_role_id = made_up_role.id';
+    sqlStr += 'ON shitty_employee = made_up_role.id';
     connection.query(sqlStr, function (err, result) {
         if (err) throw err;
 
@@ -119,18 +121,23 @@ function made_up_roleView() {
     });
 }
 
-
 const updateShittyEmployee = () => {
 
-    function runUpdateSearch() {
+    function runUpdateShittyEmployee() {
+        // eslint-disable-next-line no-unused-expressions
         inquirer
             .prompt({
                 name: 'action',
                 type: 'list',
                 message: 'Which shitty employee do you want to update?',
                 choices: shittyemployeeOptions
-            });
-           
-    }
-    runUpdateSearch();  
-};
+            }),
+            // eslint-disable-next-line no-undef
+            then.updateOptions(answer => action({
+                name: 'action',
+                type: 'input',
+                default: 'new info',
+            }, console.info(result)
+            )};
+        }
+runUpdateShittyEmployee()
