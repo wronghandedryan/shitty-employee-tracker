@@ -43,6 +43,13 @@ const shittyemployeeOptions = [
     'Montez Walker',
     'exit'
 ];
+const madeUpRolesOptions = [
+    'Aweful Salesperson',
+    'Lead Douchy Salesperson',
+    'High-School Drop out Accountant',
+    'Attorny/Drug-Dealer',
+    'Manager/Asshole'
+]
 
 const updateOptions = [
     'First Name',
@@ -71,7 +78,7 @@ function runSearch() {
                     break;
 
                 case viewOptions[2]:
-                    shitty_employeeView();
+                    shittyemployeeView();
                     break;  
                 case viewOptions[3]:
                     updateShittyEmployee();
@@ -99,13 +106,10 @@ function dead_end_departmentView() {
     });
 }
 
-function shitty_employeeView() {
+function shittyemployeeView() {
     let sqlStr = 'SELECT first_name, last_name, title, salary FROM shitty_employee';
-    sqlStr += 'LEFT JOIN role ';
-    sqlStr += 'ON shitty_employee = made_up_role.id';
     connection.query(sqlStr, function (err, result) {
         if (err) throw err;
-
         console.table(result);
         runSearch();
     });
@@ -115,29 +119,34 @@ function made_up_roleView() {
     let sqlStr = 'SELECT * FROM made_up_role';
     connection.query(sqlStr, function (err, result) {
         if (err) throw err;
-
         console.table(result);
         runSearch();
     });
 }
 
-const updateShittyEmployee = () => {
+const updateShittyEmployee = (a, b) => {
 
     function runUpdateShittyEmployee() {
         // eslint-disable-next-line no-unused-expressions
-        inquirer
-            .prompt({
-                name: 'action',
-                type: 'list',
+      inquirer
+            .prompt(a)({
+                name: 'updateOptions1',
+                type: 'rawlist',
                 message: 'Which shitty employee do you want to update?',
-                choices: shittyemployeeOptions
-            }),
-            // eslint-disable-next-line no-undef
-            then.updateOptions(answer => action({
-                name: 'action',
+                choices: ['Blake Henderson', 'Adam Demamp','Anders Holmvic', 'Karl Hevacheck','Jillian Belk','Alison Murphy','Montez Walker',]
+            })
+            .prompt(b)({
+                name: 'updateOptions2',
                 type: 'input',
-                default: 'new info',
-            }, console.info(result)
-            )};
+                message: 'Which made up role do you want to assign',
+                choices: ['Dead End Departments', 'Lead Douchy Salesperson', 'High-School Drop out Accountant', 'Attorney/Drug-Dealer', 'Manager/Asshole']
+            })
+        
+            .then(answers => {
+                console.info('Answer:', answers('a' + 'b'));
+            });
         }
-runUpdateShittyEmployee()
+           // console.table(answers(a, b), updateShittyEmployee);
+
+        runUpdateShittyEmployee();
+    };
